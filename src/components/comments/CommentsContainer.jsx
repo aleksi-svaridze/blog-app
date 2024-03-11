@@ -1,10 +1,40 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import CommentsForm from './CommentsForm'
+import { getCommentsData } from '../../data/comments'
 
 export default function CommentsContainer({className}) {
+  const [comments, setComments] = useState([]);
+
+  console.log(comments);
+
+  useEffect(() => {
+    (async() => {
+      const commentData = await getCommentsData();
+      setComments(commentData)
+    })()
+  }, [])
+
+  const addCommentsHandler = (value, parent = null, replyOnUser = null) => {
+    const newComment = {
+      _id: "10",
+        user: {
+          _id: "a",
+          name: "Mohammad Rezaii",
+        },
+        desc: value,
+        post: "1",
+        parent: parent,
+        replyOnUser: replyOnUser,
+        createdAt: "2022-12-31T17:22:05.092+0000",
+    }
+    setComments(currentState => {
+      return [newComment, ...currentState]
+    })
+  }
+
   return (
     <div className={`${className}`}>
-      <CommentsForm btnLabel={'Send'} />
+      <CommentsForm btnLabel={'Send'} formSubmitHandler={(value) => addCommentsHandler(value)} />
     </div>
   )
 }

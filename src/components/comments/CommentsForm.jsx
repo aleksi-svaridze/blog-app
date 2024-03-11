@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 
-export default function CommentsForm({btnLabel}) {
+export default function CommentsForm({btnLabel, formSubmitHandler}) {
   const [value, setValue] = useState("")
   const submitHandler = e => {
     e.preventDefault();
+    formSubmitHandler(value);
+    setValue('');
 
   }
   return (
