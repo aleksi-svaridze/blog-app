@@ -6,6 +6,7 @@ import Comment from './Comment';
 export default function CommentsContainer({className, loggedInUserId}) {
   const [comments, setComments] = useState([]);
   const mainComments = comments.filter(comment => comment.parent === null);
+  const [affectedComment, setAffectedComment] = useState(null);
 
   useEffect(() => {
     (async() => {
@@ -32,13 +33,22 @@ export default function CommentsContainer({className, loggedInUserId}) {
     })
   }
 
+  console.log(comments)
+
   return (
     <div className={`${className}`}>
       <CommentsForm btnLabel={'Send'} formSubmitHandler={(value) => addCommentsHandler(value)} />
 
       <div className='space-y-4 mt-8'>
         {mainComments.map(comment => (
-          <Comment commentData={comment} loggedInUserId={loggedInUserId}/>
+          <Comment 
+            key={comment._id}
+            commentData={comment} 
+            loggedInUserId={loggedInUserId} 
+            affectedComment={affectedComment} 
+            setAffectedComment={setAffectedComment} 
+            addComment={addCommentsHandler}
+          />
         ))}
       </div>
     </div>

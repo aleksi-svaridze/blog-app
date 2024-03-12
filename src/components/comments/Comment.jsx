@@ -1,9 +1,20 @@
 import {images} from '../../constants';
 import { FiMessageSquare, FiEdit2, FiTrash } from "react-icons/fi";
+import CommentsForm from './CommentsForm';
 
-export default function Comment({commentData, loggedInUserId}) {
+export default function Comment({
+    commentData, 
+    loggedInUserId, 
+    setAffectedComment, 
+    affectedComment,
+    addComment, 
+    parentId = null}) {
+
   const isUserLoggedIn = Boolean(loggedInUserId);
   const commentBelongsToUser = loggedInUserId === commentData.user._id;
+  const isReplying = affectedComment && affectedComment.type === 'replying' && affectedComment._id === commentData._id;
+  const repliedCommentId = parentId ? parentId : commentData._id;
+  const replyOnUserId = commentData.user._id;
 
 
   return (
@@ -16,7 +27,7 @@ export default function Comment({commentData, loggedInUserId}) {
             <p className='font-opensans mt-[10px] text-dark-light'>{commentData.desc}</p>
             <div className='flex items-center gap-x-3 text-dark-light font-roboto text-sm mt-3 mb-3'>
                 { isUserLoggedIn &&  (
-                    <button className='flex items-center space-x-2'>
+                    <button className='flex items-center space-x-2' onClick={() => setAffectedComment({type: 'replying', _id: commentData._id})}>
                         <FiMessageSquare className='w-4 h-auto' />
                         <span>Reply</span>
                     </button>
@@ -36,6 +47,12 @@ export default function Comment({commentData, loggedInUserId}) {
                 )}
                 
             </div>
+            {isReplying && (
+                <CommentsForm 
+                    btnLabel={'reply'} 
+                    formSubmitHandler={(value) => addComment(value, repliedCommentId, replyOnUserId)}
+                    formCancelHandler={() => setAffectedComment(null)} />
+            )}
         </div>
     </div>
   )

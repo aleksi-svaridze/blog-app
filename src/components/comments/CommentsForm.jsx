@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-export default function CommentsForm({btnLabel, formSubmitHandler}) {
+export default function CommentsForm({btnLabel, formSubmitHandler, formCancelHandler = null}) {
   const [value, setValue] = useState("")
   const submitHandler = e => {
     e.preventDefault();
@@ -8,6 +8,7 @@ export default function CommentsForm({btnLabel, formSubmitHandler}) {
     setValue('');
 
   }
+
   return (
     <form className='' onSubmit={submitHandler}>
       <div className='flex flex-col items-end border border-primary rounded-lg p-4 '>
@@ -15,10 +16,15 @@ export default function CommentsForm({btnLabel, formSubmitHandler}) {
           onChange={e => setValue(e.target.value)} 
           value={value} 
           rows="5" 
-          className='w-full focus:outline-none' 
+          className='w-full focus:outline-none bg-transparent' 
           placeholder='Leave your comment here..' 
         />
-        <button className='px-6 py-2.5 rounded-lg bg-primary text-white font-semibold mt-2'>{btnLabel}</button>
+        <div className='flex items-center gap-x-2 pt-2'>
+          {formCancelHandler && (
+            <button onClick={formCancelHandler} className='px-6 py-2.5 rounded-lg border-red-500 border text-red-500'>Cancel</button>
+          )}
+          <button className='px-6 py-2.5 rounded-lg bg-primary text-white font-semibold'>{btnLabel}</button>
+        </div>
       </div>
     </form>
   )
