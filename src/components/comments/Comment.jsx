@@ -8,11 +8,13 @@ export default function Comment({
     setAffectedComment, 
     affectedComment,
     addComment, 
-    parentId = null}) {
+    parentId = null,
+    updateComment}) {
 
   const isUserLoggedIn = Boolean(loggedInUserId);
   const commentBelongsToUser = loggedInUserId === commentData.user._id;
   const isReplying = affectedComment && affectedComment.type === 'replying' && affectedComment._id === commentData._id;
+  const isEditing = affectedComment && affectedComment.type === 'isEditing' && affectedComment._id === commentData._id;
   const repliedCommentId = parentId ? parentId : commentData._id;
   const replyOnUserId = commentData.user._id;
 
@@ -24,7 +26,19 @@ export default function Comment({
         <div className='flex flex-1 flex-col'>
             <h5 className='font-bold text-dark-hard text-xs'>{commentData.user.name}</h5>
             <span className='text-xs text-dark-light'>{new Date(commentData.createdAt).toLocaleDateString("en-US", {day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit'})}</span>
-            <p className='font-opensans mt-[10px] text-dark-light'>{commentData.desc}</p>
+
+            {!isEditing && (
+                <p className='font-opensans mt-[10px] text-dark-light'>{commentData.desc}</p>
+            )}
+            
+            {isEditing && (
+                <CommentsForm 
+                    btnLabel={'Update'} 
+                    formSubmitHandler={(value) => updateComment(value, commentData._id)} 
+                    formCancelHandler={() => setAffectedComment(null)}
+                    initialText={commentData.desc}
+                />
+            )}
             <div className='flex items-center gap-x-3 text-dark-light font-roboto text-sm mt-3 mb-3'>
                 { isUserLoggedIn &&  (
                     <button className='flex items-center space-x-2' onClick={() => setAffectedComment({type: 'replying', _id: commentData._id})}>
@@ -35,7 +49,7 @@ export default function Comment({
 
                 {commentBelongsToUser && (
                     <>
-                        <button className='flex items-center space-x-2'>
+                        <button className='flex items-center space-x-2' onClick={() => setAffectedComment({type: 'editing', _id: commentData._id})}>
                             <FiEdit2 className='w-4 h-auto' />
                             <span>Edit</span>
                         </button>

@@ -31,6 +31,19 @@ export default function CommentsContainer({className, loggedInUserId}) {
     setComments(currentState => {
       return [newComment, ...currentState]
     })
+    setAffectedComment(null)
+  }
+
+  const updateCommentHandler = (value, commentId) => {
+    const updatedComments = comments.map(comment => {
+      if(comment._id === commentId) {
+        return {...comment, desc: value}
+      }
+      return comment;
+    })
+
+    setComments(updatedComments);
+    setAffectedComment(null);
   }
 
   console.log(comments)
@@ -48,6 +61,7 @@ export default function CommentsContainer({className, loggedInUserId}) {
             affectedComment={affectedComment} 
             setAffectedComment={setAffectedComment} 
             addComment={addCommentsHandler}
+            updateComment={updateCommentHandler}
           />
         ))}
       </div>
