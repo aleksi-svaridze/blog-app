@@ -46,6 +46,13 @@ export default function CommentsContainer({className, loggedInUserId}) {
     setAffectedComment(null);
   }
 
+  const deleteCommentHandler = (commentId) => {
+    const updatedComments = comments.filter(comment => {
+      return comment._id !== commentId
+    })
+    setComments(updatedComments);
+  }
+
   console.log(comments)
 
   return (
@@ -62,6 +69,7 @@ export default function CommentsContainer({className, loggedInUserId}) {
             setAffectedComment={setAffectedComment} 
             addComment={addCommentsHandler}
             updateComment={updateCommentHandler}
+            deleteComment={deleteCommentHandler}
           />
         ))}
       </div>

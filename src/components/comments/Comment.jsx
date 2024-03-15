@@ -9,12 +9,13 @@ export default function Comment({
     affectedComment,
     addComment, 
     parentId = null,
-    updateComment}) {
+    updateComment,
+    deleteComment}) {
 
   const isUserLoggedIn = Boolean(loggedInUserId);
   const commentBelongsToUser = loggedInUserId === commentData.user._id;
   const isReplying = affectedComment && affectedComment.type === 'replying' && affectedComment._id === commentData._id;
-  const isEditing = affectedComment && affectedComment.type === 'isEditing' && affectedComment._id === commentData._id;
+  const isEditing = affectedComment && affectedComment.type === 'editing' && affectedComment._id === commentData._id;
   const repliedCommentId = parentId ? parentId : commentData._id;
   const replyOnUserId = commentData.user._id;
 
@@ -53,7 +54,7 @@ export default function Comment({
                             <FiEdit2 className='w-4 h-auto' />
                             <span>Edit</span>
                         </button>
-                        <button className='flex items-center space-x-2'>
+                        <button className='flex items-center space-x-2' onClick={() => deleteComment(commentData._id)}>
                             <FiTrash className='w-4 h-auto' />
                             <span>Delete</span>
                         </button>
