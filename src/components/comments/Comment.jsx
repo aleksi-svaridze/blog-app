@@ -10,7 +10,8 @@ export default function Comment({
     addComment, 
     parentId = null,
     updateComment,
-    deleteComment}) {
+    deleteComment,
+    replies}) {
 
   const isUserLoggedIn = Boolean(loggedInUserId);
   const commentBelongsToUser = loggedInUserId === commentData.user._id;
@@ -67,6 +68,24 @@ export default function Comment({
                     btnLabel={'reply'} 
                     formSubmitHandler={(value) => addComment(value, repliedCommentId, replyOnUserId)}
                     formCancelHandler={() => setAffectedComment(null)} />
+            )}
+            {replies.length > 0 && (
+                <div>
+                    {replies.map(reply => ( 
+                        <Comment 
+                            key={reply._id} 
+                            addComment={addComment} 
+                            affectedComment={affectedComment} 
+                            setAffectedComment={setAffectedComment} 
+                            commentData={reply}
+                            deleteComment={deleteComment}
+                            loggedInUserId={loggedInUserId}
+                            replies={[]}
+                            updateComment={updateComment}
+                            parentId={commentData.parentId}
+                        />
+                    ))}
+                </div>
             )}
         </div>
     </div>
