@@ -4,6 +4,7 @@ import BreadCrumbs from '../../components/BreadCrumbs'
 import { images } from '../../constants'
 import SuggestedPosts from './container/SuggestedPosts'
 import CommentsContainer from '../../components/comments/CommentsContainer'
+import SocialShareBtns from '../../components/SocialShareBtns'
 
 export default function ArticleDetail() {
     const breadCrumbsData = [
@@ -46,12 +47,18 @@ export default function ArticleDetail() {
                 </div>
                 <CommentsContainer className={'mt-10'} loggedInUserId='a' />
             </article>
-            <SuggestedPosts 
-                header={'Latest Article'} 
-                posts={postsdata} 
-                tags={tagsData} 
-                className={'mt-8 lg:mt-0 lg:max-w-sm'}
+            <div>
+                <SuggestedPosts 
+                    header={'Latest Article'} 
+                    posts={postsdata} 
+                    tags={tagsData} 
+                    className={'mt-8 lg:mt-0 lg:max-w-sm'}
                 />
+                <div className='mt-7'>
+                    <h2 className='font-roboto font-medium text-dark-hard mb-4 md:text-xl'>Share on:</h2>
+                    <SocialShareBtns />
+                </div>
+            </div>
         </div>
     </MainLayout>
   )
