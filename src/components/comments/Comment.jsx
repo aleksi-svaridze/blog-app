@@ -26,7 +26,7 @@ export default function Comment({
         <img src={images.PostImage_1} alt="" className='w-9 h-9 object-cover rounded-full' />
 
         <div className='flex flex-1 flex-col'>
-            <h5 className='font-bold text-dark-hard text-xs'>{commentData.user.name}</h5>
+            <h5 className='font-bold text-dark-hard text-xs lg:text-sm'>{commentData.user.name}</h5>
             <span className='text-xs text-dark-light'>{new Date(commentData.createdAt).toLocaleDateString("en-US", {day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit'})}</span>
 
             {!isEditing && (
