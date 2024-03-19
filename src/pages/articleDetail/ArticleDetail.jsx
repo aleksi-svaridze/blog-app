@@ -56,7 +56,10 @@ export default function ArticleDetail() {
                 />
                 <div className='mt-7'>
                     <h2 className='font-roboto font-medium text-dark-hard mb-4 md:text-xl'>Share on:</h2>
-                    <SocialShareBtns />
+                    <SocialShareBtns 
+                        url={encodeURI('https://moonfo.com/post/client-side-and-server-side-explanation')} 
+                        title={encodeURIComponent('Client-side and Server-side explanation')} 
+                    />
                 </div>
             </div>
         </div>

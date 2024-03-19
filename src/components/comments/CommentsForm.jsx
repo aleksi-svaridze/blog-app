@@ -19,7 +19,7 @@ export default function CommentsForm({btnLabel, formSubmitHandler, formCancelHan
           className='w-full focus:outline-none bg-transparent' 
           placeholder='Leave your comment here..' 
         />
-        <div className='flex items-center gap-x-2 pt-2'>
+        <div className='flex flex-col-reverse gap-y-2 min-[420px] items-center gap-x-2 pt-2'>
           {formCancelHandler && (
             <button onClick={formCancelHandler} className='px-6 py-2.5 rounded-lg border-red-500 border text-red-500'>Cancel</button>
           )}
