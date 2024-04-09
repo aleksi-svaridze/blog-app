@@ -2,6 +2,8 @@ import { useState } from 'react';
 import {images} from '../constants';
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import {useSelector, useDispatch} from 'react-redux'
+import { logout } from '../store/actons/user';
 
 const NavItemInfo = [
   {name: 'home', type: "link"},
@@ -48,12 +50,18 @@ const NavItem = ({item}) => {
 }
 
 export default function Header() {
+  const dispatch = useDispatch();
   const [navIsVisible, setNavIsVisible] = useState(false);
+  const userState = useSelector(state => state.user);
+  const [profileDropdown, setProfileDropdown] = useState(false);
 
   const navVisibilityHandler = () => {
     setNavIsVisible(curState => {
       return !curState;
     })
+  }
+  const logoutHandler = () => {
+    dispatch(logout())
   }
 
   return (
@@ -80,7 +88,42 @@ export default function Header() {
               ))
             }
           </ul>
-          <button className='border-2 mt-5 lg:mt-0 border-blue-500 px-6 py-2 rounded-full text-blue-500 font-semibold hover:bg-blue-500 hover:text-white transition-all duration-300'>Sign in</button>
+          {
+            userState.userInfo ? 
+            <div className='text-white lg:text-dark-soft flex items-center gap-y-5 gap-x-2 font-semibold flex-col lg:flex-row'>
+              <div className='relative group'>
+                <div className='flex flex-col items-center'>
+                  <button className='flex gap-x-1 items-center mt-5 lg:mt-0 border-2 border-blue-500 px-6 py-2 rounded-full text-blue-500 font-semibold hover:bg-blue-500 hover:text-white transition-all duration-300' onClick={() => setProfileDropdown(!profileDropdown)}>
+                    <span>Profile</span>
+                    <MdKeyboardArrowDown />
+                  </button>
+                  <div className={`${profileDropdown ? 'block' : 'hidden'} transition-all duration-500 lg:hidden pt-4 lg:absolute lg:bottom-0 lg:right-0 lg:transform lg:translate-y-full lg:group-hover:block w-max`}>
+                    <div className='bg-dark-soft lg:bg-transparent text-center flex flex-col shadow-lg rounded-lg overflow-hidden'>
+                        <button
+                          type='button'
+                          className='hover:bg-dark-hard hover:text-white px-4 py-2 text-white lg:text-dark-soft lg:bg-white'
+                        >
+                            Dashboard
+                        </button>
+                        <button 
+                          onClick={logoutHandler}
+                          type='button'
+                          className='hover:bg-dark-hard hover:text-white px-4 py-2 text-white lg:text-dark-soft lg:bg-white'
+                        >
+                            Logout
+                        </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> 
+            :
+            <button 
+              className='border-2 mt-5 lg:mt-0 border-blue-500 px-6 py-2 rounded-full text-blue-500 font-semibold hover:bg-blue-500 hover:text-white transition-all duration-300'
+            >
+              Sign in
+            </button>
+          }
         </div>
       </header>
     </div>
